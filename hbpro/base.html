@@ -87,3 +87,39 @@
 </body>
 
 </html>
+
+
+<!--{% extends "chat/base.html" %}
+{% block content %}
+
+<section class="page-section" id="contentuser">
+  <div class="col-auto table-responsive">
+    <h3 class="mb-4">Team</h3>
+    <div class="form-group">
+      <label for="room-name-input">What chat room would you like to enter?</label>
+      <input type="text" class="form-control" id="room-name-input" />
+    </div>
+    <input id="room-name-submit" class="btn btn-success" type="button" value="Chating" onclick="click_()" />
+  </div>
+</section>
+{% endblock %}
+
+
+{% block js %}
+<script>
+    var input = document.getElementById("room-name-input");
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+        $("#room-name-submit").click();
+      }
+    });
+    function click_() {
+        var room_name = document.getElementById("room-name-input").value ;
+        window.location.pathname = '/chat/chat_' + room_name + '_{{ uid4 }}/';
+    }
+    
+
+   
+</script>
+{% endblock %}
+-->

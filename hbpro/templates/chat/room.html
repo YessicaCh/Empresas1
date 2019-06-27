@@ -1,141 +1,275 @@
-{% extends "chat/roombase.html" %}
+<!-- chat/templates/chat/room.html -->
 {% load staticfiles %}
+{% load bootstrap3 %}
 
-{% block content %}
-<table class="table">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Hummingbird</title>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Custom fonts for this theme -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+        type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="{% static '/css/freelancer.min.css' %}" rel="stylesheet">
+    {% bootstrap_css %}
+    <style>
+.contacts_body{
+            padding:  0.75rem 0 !important;
+            overflow-y: auto;
+            white-space: nowrap;
+        }
+.contacts li{
+            width: 70% !important;
+            padding: 5px 10px;
+            margin-bottom: 15px !important;
+        }
+.card{
+            height: 500px;
+            border-radius: 15px !important;
+            background-color: rgba(0,0,0,0.4) !important;
+        }
+.active{
+            background-color: rgba(0,0,0,0.3);
+    }
+.img_cont{
+            position: relative;
+            height: 70px;
+            width: 70px;
+    }
+.user_info{
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 15px;
+    }
+.user_info span{
+        font-size: 15px;
+        color: black;
+    }
+.user_info p{
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    }
+.user_img{
+            height: 70px;
+            width: 70px;
+            border:1.5px solid #f5f6fa;
+        
+        }
+.online_icon{
+        position: absolute;
+        height: 15px;
+        width:15px;
+        background-color: #4cd137;
+        border-radius: 50%;
+        bottom: 0.2em;
+        right: 0.4em;
+        border:1.5px solid white;
+    }
+</style>
     
-    <tr>
-        <td>
-            <div class="user-list-div">
-                <ul>
-                    <li>
-                    <input id="room-name-submit" class="btn btn-success" type="button" 
-                    value="MENTOR"/>{{ sm.mentor.name }}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Hummingbird</a>
+            <button
+                class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
+                type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#progress">Progress</a>
                     </li>
-                    <li>
-                    <input id="room-name-submit" class="btn btn-success" type="button" 
-                    value='STUDENT A'/>{{ sm.studentA.name }}
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'contentuseruser' %}">Team</a>
                     </li>
-                    <li>
-                    <input id="room-name-submit" class="btn btn-success" type="button" 
-                    value='STUDENT B'/>{{ sm.studentB.name }}
-                    </li>
-                    
+                    <li class="nav-item mx-0 mx-lg-1 dropdown">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded dropdown-toggle" href="#" id="navbarDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ stu.nick_name }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/chat/team/">Chat room</a>
+                            <a class="dropdown-item" href="#">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'login'%}">Log Out</a>
+                        </div>
+                    </li>                    
+                    <li class="nav-item avatar">
+                        <a class="nav-link" id="User" aria-haspopup="true" aria-expanded="false">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="md-avatar rounded-circle size-3" alt="avatar image">
+                        </a>                       
+                    </li>                    
                 </ul>
             </div>
-        </td>
-        <td>
-            <div class="row">
-                <div class="col-md-5">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <span class="glyphicon glyphicon-comment"></span> Chat
-                        </div>
-                        <div class="panel-body" id="all_messages">
-                            <ul class="chat">
-                                    {% if user.is_authenticated %}
-                                    {% for message in chat_messages %}
-                                        {% if message.user == user %}
-                                        <li class="right clearfix"><span class="chat-img pull-right">
-                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/>
-                                        </span>
-                                            <div class="chat-body clearfix">
-                                                <div class="header">
-                                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{message.created|date:"H:i"}}
-                                                    </small>
-                                                    <strong class="pull-right primary-font">{{ message.user }}</strong>
-                                                </div>
-                                                <p>
-                                                    {{ message.message|safe }}
-                                                </p>
-                                            </div>
-                                        </li>
-                                        {% else %}
-                                        <li class="left clearfix"><span class="chat-img pull-left">
-                                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/>
-                                        </span>
-                                            <div class="chat-body clearfix">
-                                                <div class="header">
-                                                    <strong class="primary-font">{{ message.user }}</strong>
-                                                    <small class="pull-right text-muted">
-                                                        <span class="glyphicon glyphicon-time"></span>{{message.created|date:"H:i"}}
-                                                    </small>
-                                                </div>
-                                                <p>
-                                                    {{ message.message|safe }}
-                                                </p>
-                                            </div>
-                                        </li>
-                                        {% endif %}
-                                    {% empty %}
+        </div>
+    </nav>
 
-                                    {% endfor %}
-                                {% else %}
-                                        <div>Please Login</div>
-                                {% endif %}
-
-                            </ul>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm"
-                                       placeholder="Type your message here..."/>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-warning btn-sm" id="btn-chat">
-                                            Send</button>
-                                    </span>
+    {% block content %}
+    <section class="page-section" id="chat">
+                    <table class="table">
+                        <tr>
+                        <td>
+                            {{ user.name }}
+                            <div class="card-body contacts_body">
+                                <ui class="contacts">
+                                <li class="active">
+                                    <div class="d-flex bd-highlight">
+                                        <div class="img_cont">
+                                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-7.jpg" alt="Avatar"
+                                            class="rounded-circle user_img">
+                                            <span class="online_icon"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            <span>Maryam Naz</span>
+                                            <p>Maryam is online</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex bd-highlight">
+                                        <div class="img_cont">
+                                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" alt="Avatar"
+                                            class="rounded-circle user_img">
+                                            <span class="online_icon offline"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            <span>Sahar Darya</span>
+                                            <p>Sahar left 7 mins ago</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex bd-highlight">
+                                        <div class="img_cont">
+                                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" alt="Avatar"
+                                            class="rounded-circle user_img">
+                                            <span class="online_icon"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            <span>Yolduz Rafi</span>
+                                            <p>Yolduz is online</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                </ui>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>
-</table>    
-{% endblock %}
+                            <div class="card-footer"></div>
+                        </td>
+                        <td>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <span class="glyphicon glyphicon-comment"></span> Chat
+                                </div>
+                                <div class="panel-body" id="chat-log-in">
+                                <!--<ul class="chat">-->
+                                    {% if user.is_authenticated %}
+                                        <textarea id="chat-log" class="form-control input-sm" rows="12"></textarea><br/>  
+                                    {% else %}
+                                        <div>Please Login</div>
+                                    {% endif %}
+                                <!--</ul>-->
+                                </div>
+                                <!--Pie de chat -->
+                                <div class="panel-footer">
+                                    <div class="input-group">
+                                        <input id="chat-message-input" type="text" class="form-control input-sm" placeholder="Type your message here..."/><br/>
+                                        <span class="input-group-btn">
+                                            <input id="chat-message-submit" type="button" value="Send" class="btn btn-warning btn-sm" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <tr>
+                    </table>
+    
+                    
 
-{% block js %}
-<script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+            <!--</div>
+        </div>-->
+    </section>
+    {% endblock %}
+
+
+
+</body>
+
+{% block js%}
 <script>
-    $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
-    var room_mame = '{{ room_name }}';
-    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var websocket_str= ws_scheme+'://' + window.location.host + '/ws/chat/' + room_mame + '/';
-    var chatSocket = new ReconnectingWebSocket(websocket_str);
+    var roomName = {{ room_name_json }};
+    //var chatSocket = new WebSocket("ws://localhost:8000/chat/demo/");
+    //var chatSocket = new WebSocket("ws://echo.websocket.org");
+    var chatSocket = new WebSocket('ws://' + window.location.host +'/ws/chat/' + roomName + '/');
 
-    chatSocket.onmessage = function (e) {
+    chatSocket.onmessage = function(e) {
         var data = JSON.parse(e.data);
         var message = data['message'];
-        var now_time = data['now_time'];
         var receive_user = data['user'];
+        var now_time = data['now_time'];
         var user = "{{user}}";
-        if (receive_user === user) {
-            $('<li class="right clearfix"><span class="chat-img pull-right"><img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><small class=" text-muted"><span class="glyphicon glyphicon-time"></span>'+now_time+'</small><strong class="pull-right primary-font">'+user+'</strong></div><p>'+message+'</p></div></li>').appendTo($('.chat'))
+        
+        console.log(message);
+        console.log(data);
+        console.log(user);
+        document.querySelector('#chat-log').value += (user+":"+message + '\n'+now_time+ '\n');
+    };
+
+    chatSocket.onopen = function(e){
+        console.log("entramos en la conneccion");
+    }
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+    document.querySelector('#chat-message-input').onkeyup = function(e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
         }
-        else{
-            $('<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font">'+ receive_user+ '</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+now_time+'</small></div><p>'+message+'</p></div></li>').appendTo($('.chat'))
-        }
-        $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
-        };
+    };
 
-        chatSocket.onclose = function (e) {
-            console.error('Chat socket closed unexpectedly');
-        };
+    document.querySelector('#chat-message-submit').onclick = function(e) {
+        var messageInputDom = document.querySelector('#chat-message-input');
+        var message = messageInputDom.value;
 
-        $("#btn-input").focus();
-        $("#btn-input").keyup(function(e){
-          if (e.keyCode === 13) {  // enter, return
-                $("#btn-chat").click();
-            }
-        });
+        chatSocket.send(JSON.stringify({
+            'message': message
+        }));
 
-        $("#btn-chat").click(function() {
-          var message = $('#btn-input').val();
-          chatSocket.send(JSON.stringify({
-                'message': message
-          }));
-          $('#btn-input').val('');
+        messageInputDom.value = '';
+    };
+</script>
 
-        });
+ <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+        <!-- Plugin JavaScript -->
+<script src="{%static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+
+        <!-- Contact Form JavaScript -->
+<script src="{% static 'js/jqBootstrapValidation.js' %}"></script>
+<script src="{% static 'js/contact_me.js' %}"></script>
+
+        <!-- Custom scripts for this template -->
+<script src="{% static 'js/freelancer.min.js' %}"></script>
+<script>
 </script>
 {% endblock %}
+</html>
+

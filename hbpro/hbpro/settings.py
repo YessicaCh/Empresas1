@@ -39,13 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'hbpro',
+    'chat',
     'apps.initpage',
     'apps.register',
     'apps.login',
     'apps.user', #deberia llamarse allModels 
-    'apps.chat',   
-    'bootstrap4',
-    'bootstrap3',
+    'bootstrap3',  
 ]
 
 MIDDLEWARE = [
@@ -95,15 +94,17 @@ DATABASES = {
 
 
 # channels settings
-ASGI_APPLICATION = "hbpro.routing.application"
+
+ASGI_APPLICATION = 'hbpro.routing.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('redis', 6378)],
+            "hosts": [('127.0.0.1', 6379)],
         },
-    }
+    },
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -145,6 +146,7 @@ USE_TZ = True
 STATIC_URL ='/static/'
 #STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'staticfiles'),) 
+DATETIME_FORMAT = '%H:%M'
 
 
 #STATIC_DIRS = (os.path.join(BASE_DIR,'static'),)

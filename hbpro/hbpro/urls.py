@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^initpage/',include('apps.initpage.urls')),
     url(r'^register/',include('apps.register.urls')),
     url(r'^login/', include('apps.login.urls')),  
-    url(r'^chat/', include('apps.chat.urls')), 
+    url(r'^chat/', include('chat.urls')), 
     url(r'^', include('django.contrib.auth.urls')),
 ]

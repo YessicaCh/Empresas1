@@ -1,0 +1,235 @@
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Hummingbird</title>
+    
+
+    <!-- Custom fonts for this theme -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+        type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="{% static '/css/freelancer.min.css' %}" rel="stylesheet">
+    <!-- <link href="{% static "stylesheets/login.css" %}" rel="stylesheet">-->
+    <link href="{% static "stylesheets/chat.css" %}" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Hummingbird</title>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Custom fonts for this theme -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
+        type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="{% static '/css/freelancer.min.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Hummingbird</a>
+            <button
+                class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
+                type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#progress">Progress</a>
+                    </li>
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="{% url 'contentuseruser' %}">Team</a>
+                    </li>
+                    <li class="nav-item mx-0 mx-lg-1 dropdown">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded dropdown-toggle" href="#" id="navbarDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ stu.nick_name }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Link</a>
+                            <a class="dropdown-item" href="#">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'login'%}">Log Out</a>
+                        </div>
+                    </li>                    
+                    <li class="nav-item avatar">
+                        <a class="nav-link" id="User" aria-haspopup="true" aria-expanded="false">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="md-avatar rounded-circle size-3" alt="avatar image">
+                        </a>                       
+                    </li>                    
+                </ul>
+            </div>
+        </div>
+</nav>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+
+{% block js %}
+{% endblock %}
+
+
+</html>
+
+
+<!--{% extends "chat/roombase.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<table class="table">
+    
+    <tr>
+        <td>
+            <div class="user-list-div">
+                <ul>
+                    <li>
+                    <input id="room-name-submit" class="btn btn-success" type="button" 
+                    value="MENTOR"/>{{ sm.mentor.name }}
+                    </li>
+                    <li>
+                    <input id="room-name-submit" class="btn btn-success" type="button" 
+                    value='STUDENT A'/>{{ sm.studentA.name }}
+                    </li>
+                    <li>
+                    <input id="room-name-submit" class="btn btn-success" type="button" 
+                    value='STUDENT B'/>{{ sm.studentB.name }}
+                    </li>
+                    
+                </ul>
+            </div>
+        </td>
+        <td>
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <span class="glyphicon glyphicon-comment"></span> Chat
+                        </div>
+                        <div class="panel-body" id="all_messages">
+                            <ul class="chat">
+                                    {% if user.is_authenticated %}
+                                    {% for message in chat_messages %}
+                                        {% if message.user == user %}
+                                        <li class="right clearfix"><span class="chat-img pull-right">
+                                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/>
+                                        </span>
+                                            <div class="chat-body clearfix">
+                                                <div class="header">
+                                                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{message.created|date:"H:i"}}
+                                                    </small>
+                                                    <strong class="pull-right primary-font">{{ message.user }}</strong>
+                                                </div>
+                                                <p>
+                                                    {{ message.message|safe }}
+                                                </p>
+                                            </div>
+                                        </li>
+                                        {% else %}
+                                        <li class="left clearfix"><span class="chat-img pull-left">
+                                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/>
+                                        </span>
+                                            <div class="chat-body clearfix">
+                                                <div class="header">
+                                                    <strong class="primary-font">{{ message.user }}</strong>
+                                                    <small class="pull-right text-muted">
+                                                        <span class="glyphicon glyphicon-time"></span>{{message.created|date:"H:i"}}
+                                                    </small>
+                                                </div>
+                                                <p>
+                                                    {{ message.message|safe }}
+                                                </p>
+                                            </div>
+                                        </li>
+                                        {% endif %}
+                                    {% empty %}
+
+                                    {% endfor %}
+                                {% else %}
+                                        <div>Please Login</div>
+                                {% endif %}
+
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="input-group">
+                                <input id="btn-input" type="text" class="form-control input-sm"
+                                       placeholder="Type your message here..."/>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-warning btn-sm" id="btn-chat">
+                                            Send</button>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>    
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src='{% static "js/reconnecting-websocket.min.js" %}'></script>
+<script>
+    $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
+    var room_mame = '{{ room_name }}';
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var websocket_str= ws_scheme+'://' + window.location.host + '/ws/chat/' + room_mame + '/';
+    var chatSocket = new ReconnectingWebSocket(websocket_str);
+
+    chatSocket.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        var message = data['message'];
+        var now_time = data['now_time'];
+        var receive_user = data['user'];
+        var user = "{{user}}";
+        if (receive_user === user) {
+            $('<li class="right clearfix"><span class="chat-img pull-right"><img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><small class=" text-muted"><span class="glyphicon glyphicon-time"></span>'+now_time+'</small><strong class="pull-right primary-font">'+user+'</strong></div><p>'+message+'</p></div></li>').appendTo($('.chat'))
+        }
+        else{
+            $('<li class="left clearfix"><span class="chat-img pull-left"><img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/></span><div class="chat-body clearfix"><div class="header"><strong class="primary-font">'+ receive_user+ '</strong><small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>'+now_time+'</small></div><p>'+message+'</p></div></li>').appendTo($('.chat'))
+        }
+        $('#all_messages').scrollTop($('#all_messages')[0].scrollHeight);
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        $("#btn-input").focus();
+        $("#btn-input").keyup(function(e){
+          if (e.keyCode === 13) {  // enter, return
+                $("#btn-chat").click();
+            }
+        });
+
+        $("#btn-chat").click(function() {
+          var message = $('#btn-input').val();
+          chatSocket.send(JSON.stringify({
+                'message': message
+          }));
+          $('#btn-input').val('');
+
+        });
+</script>
+{% endblock %}-->
