@@ -1,0 +1,34 @@
+{% extends "base/baseUser.html" %}
+{% load staticfiles %}
+
+{% block main %}
+
+<section class="page-section" id="contentuser">
+<div class="col-auto">
+<h3 class="mb-4">Progress Studemt</h3>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Cursos</th>
+            <th scope="col">Percentage</th>
+            <th scope="col">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+       
+        {% for curso in cursos %}
+        <tr>           
+            <th scope="row"></th>
+            <td>{{ curso.course.name }}</td>
+            <td>{{ curso.percentage }} %</td>
+            <td>Today</td>
+        </tr>
+        {% endfor %}
+       
+    </tbody>
+</table>
+</div>
+</section>
+
+{% endblock %}

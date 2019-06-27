@@ -1,0 +1,35 @@
+{% extends "base/baseMemtor.html" %}
+{% load staticfiles %}
+
+{% block main %}
+
+<section class="page-section" id="contentuser">
+<div class="col-auto">
+    <h3 class="mb-4">Progress memtor</h3>
+    <form  method="put" novalidate>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Cursos</th>
+                <th scope="col">Percentage</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for curso in cursos %}
+            <tr>
+                <th scope="row"></th>
+                <td>{{ curso.course.name }}</td>
+                <td><input type="number" name='{{ curso.id }}' min={{ curso.percentage }} max="100" value={{ curso.percentage }}> </td>
+                <td>Today</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <td><input type="submit" value="Submit"></td>
+    </table>
+    </form>
+</div>
+</section>
+
+{% endblock %}
