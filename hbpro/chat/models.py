@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+
 class Message(models.Model):
     """
     Model to represent user submitted changed to a resource guide
