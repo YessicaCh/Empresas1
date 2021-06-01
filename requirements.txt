@@ -44,7 +44,7 @@ six==1.12.0
 sqlparse==0.3.0
 Twisted==19.2.1
 txaio==18.8.1
-urllib3==1.25.3
+urllib3==1.26.5
 urwid==2.0.1
 utils==0.9.0
 utils2==0.1.2
