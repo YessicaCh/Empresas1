@@ -48,5 +48,5 @@ urllib3==1.25.3
 urwid==2.0.1
 utils==0.9.0
 utils2==0.1.2
-websockets==3.2
+websockets==9.1
 zope.interface==4.6.0
